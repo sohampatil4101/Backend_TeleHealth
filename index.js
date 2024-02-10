@@ -13,7 +13,7 @@ app.use(cors()) // To allow browser to use api to make changes and solve cors er
 app.use(express.json()) // when u want to use req.body then u need to have a middleware here these middleware is app.use i.e when u want to use console.log(req.body)
 
 app.get('/', (req, res) => {
-  res.send('hello World!!!!!!!!!')
+  res.send('vrusharth')
 })
  
 so = require('./routes/auth.js')
@@ -24,5 +24,5 @@ app.use('/api/auths', so)
 
 
 app.listen(port, () => {
-  console.log(`Notebook app listening on port ${port}`)
+  console.log(`Backend app listening on port ${port}`)
 })
