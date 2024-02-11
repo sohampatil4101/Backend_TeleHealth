@@ -16,9 +16,9 @@ app.get('/', (req, res) => {
   res.send('vrusharth')
 })
  
-so = require('./routes/auth.js')
 // Available routes
-app.use('/api/auths', so)
+app.use('/api/user', require('./routes/user'))
+app.use('/api/doctor', require('./routes/doctor'))
 // app.use('/api/notes', require('./routes/note'))
 
 
