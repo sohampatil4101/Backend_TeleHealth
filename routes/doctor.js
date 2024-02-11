@@ -1,5 +1,5 @@
 const express = require('express')
-const User = require('../models/User')
+const Doctor = require('../models/Doctor')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -25,22 +25,22 @@ router.post('/', validate, async (req, res) =>{
     
     try {
             // check wheather user exist!!
-            let user = await User.findOne({email: req.body.email});
-            if(user){
-        return res.status(400).json({success, error: "sorry user with these email exist"})
+            let doctor = await Doctor.findOne({email: req.body.email});
+            if(doctor){
+        return res.status(400).json({success, error: "sorry doctor with these email exist"})
     }
     else{
         const salt = await bcrypt.genSalt(10);
         hashpassword = await bcrypt.hash(req.body.password, salt)
-        user = await User.create({
+        doctor = await Doctor.create({
             uniqueid : req.body.uniqueid,
             name : req.body.name,
             email : req.body.email,
             password : hashpassword
         })
         const data = {
-            user:{
-                id: user.id
+            doctor:{
+                id: doctor.id
             }
         }
         const jwtdata = jwt.sign(data, JWT_SECRET);
@@ -74,18 +74,18 @@ router.post('/login', [
 
         const{email, password} = req.body;
         try {
-            const user = await User.findOne({email});
-            if(!user){
+            const doctor = await Doctor.findOne({email});
+            if(!doctor){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
-            const passwordcompare = await bcrypt.compare(password, user.password);
+            const passwordcompare = await bcrypt.compare(password, doctor.password);
             if(!passwordcompare){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
             
         const data = {
-            user:{
-                id: user.id
+            doctor:{
+                id: doctor.id
             }
         }
         const jwtdata = jwt.sign(data, JWT_SECRET);
