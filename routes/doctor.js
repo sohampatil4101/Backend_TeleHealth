@@ -36,7 +36,6 @@ router.post('/', validate, async (req, res) =>{
         const salt = await bcrypt.genSalt(10);
         hashpassword = await bcrypt.hash(req.body.password, salt)
         doctor = await Doctor.create({
-            uniqueid : req.body.uniqueid,
             name : req.body.name,
             email : req.body.email,
             password : hashpassword
@@ -112,6 +111,7 @@ router.post('/login', [
 
         const user = await docinfo.create({
             doctor: req.user.id,
+            uniqueid : req.body.uniqueid,
             specialization : req.body.specialization,
             yrofgraduation : req.body.yrofgraduation,
             experience : req.body.experience,
@@ -174,6 +174,18 @@ catch (error) {
 router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
     try {
         const notes = await appoinment.find({doctor: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+// route for doc to fetch all doctors
+router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
+    try {
+        const notes = await doctor.find();
         res.json(notes)
     } catch (error) {
     console.log(error.message)
