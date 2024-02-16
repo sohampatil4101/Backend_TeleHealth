@@ -75,18 +75,18 @@ router.post('/login', [
 
         const{email, password} = req.body;
         try {
-            const doctor = await Doctor.findOne({email});
-            if(!doctor){
+            const user = await Doctor.findOne({email});
+            if(!user){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
-            const passwordcompare = await bcrypt.compare(password, doctor.password);
+            const passwordcompare = await bcrypt.compare(password, user.password);
             if(!passwordcompare){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
             
         const data = {
-            doctor:{
-                id: doctor.id
+            user:{
+                id: user.id
             }
         }
         const jwtdata = jwt.sign(data, JWT_SECRET);

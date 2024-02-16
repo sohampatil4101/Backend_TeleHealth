@@ -13,9 +13,9 @@ const JWT_SECRET = 'masknxanxlanla';
 router.post('/postblog', fetchuser, async (req, res) =>{
         
     try {
-
+        console.log(req.user.id)
         const user = await blog.create({
-            doctor: req.doctor.id,
+            doctor: req.user.id,
             title : req.body.title,
             description : req.body.description
         })
