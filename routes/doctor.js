@@ -1,5 +1,6 @@
 const express = require('express')
 const Doctor = require('../models/Doctor')
+const docinfo = require('../models/doctorinfo/docinfo')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -100,6 +101,36 @@ router.post('/login', [
     }
     }
     )
+
+
+    // Route to update user old deases
+  router.post('/doctorinfo', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await docinfo.create({
+            doctor: req.user.id,
+            specialization : req.body.specialization,
+            yrofgraduation : req.body.yrofgraduation,
+            experience : req.body.experience,
+            type : req.body.type,
+            govno : req.body.govno
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+    
+    catch (error) {
+        console.log(error.message)
+        res.status(500).send("Some error occured")
+    }
+    
+    
+})
+
 
 
     // Route 3 to get user details
