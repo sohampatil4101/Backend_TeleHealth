@@ -1,6 +1,8 @@
 const express = require('express')
 const Doctor = require('../models/Doctor')
 const docinfo = require('../models/doctorinfo/docinfo')
+const appoinment = require('../models/appoinment/Appoinment')
+const review = require('../models/review/review')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -133,6 +135,94 @@ router.post('/login', [
 
 
 
+
+// Route to book appoinment
+   router.post('/bookappoinment', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await appoinment.create({
+            user: req.user.id,
+            doctor: req.body.doctor,
+            date : req.body.date,
+            time : req.body.time,
+            customschedule : req.body.customschedule,
+            package : req.body.package,
+            duration : req.body.duration,
+            problem : req.body.problem,
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+
+catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+}
+
+
+})
+
+
+// route for doc to fetch all his appoinment
+router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
+    try {
+        const notes = await appoinment.find({doctor: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+
+// Route to post review
+   router.post('/postreview', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await review.create({
+            user: req.user.id,
+            doctor: req.body.doctor,
+            review : req.body.review,
+            rating : req.body.rating
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+    
+    catch (error) {
+        console.log(error.message)
+        res.status(500).send("Some error occured")
+    }
+    
+    
+})
+
+
+router.get('/getreviews', fetchuser, async(req, res) =>{
+    try {
+        const notes = await review.find({doctor: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+
+
+
+
+
     // Route 3 to get user details
 
 
@@ -149,5 +239,8 @@ router.post('/login', [
         }
         
     })
+
+
+
 
 module.exports = router
