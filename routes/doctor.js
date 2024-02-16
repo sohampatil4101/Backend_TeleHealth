@@ -11,7 +11,6 @@ const fetchuser = require('../middleware/fetchuser');
 const JWT_SECRET = 'masknxanxlanla';
 
 const validate = [
-    body('uniqueid', 'Enter a valid uniqueid').isLength({min:3}),
     body('name', 'Enter a valid name').isLength({min:3}),
     body('email', 'Enter a valid Email').isEmail(),
     body('password', 'password must be atleast 5 characters and alphanumeric').isLength({min:5}).isAlphanumeric(),
