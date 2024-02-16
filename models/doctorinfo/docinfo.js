@@ -6,6 +6,10 @@ const docSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'doctor',
     },  
+    uniqueid:{
+        type: String,
+        required: true
+    },
     specialization:{
         type: String,
         required: true

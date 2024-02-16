@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose
 const DoctorSchema = new mongoose.Schema({
 
-    uniqueid:{
-        type: String,
-        required: true
-    },
+    
     name:{
         type: String,
         required: true
