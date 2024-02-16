@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.use('/api/user', require('./routes/user'))
 app.use('/api/doctor', require('./routes/doctor'))
 app.use('/api/chat', require('./routes/chat'))
-
+app.use('/api/blog', require('./routes/blog'))
 
 
 app.listen(port, () => {
