@@ -1,5 +1,7 @@
 const express = require('express')
 const User = require('../models/User')
+const Updateuser = require('../models/user_medi_info/UserInfo')
+const Updateuserdeases = require('../models/user_medi_info/OldMedi_info')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -98,6 +100,63 @@ router.post('/login', [
     }
     }
     )
+
+
+
+
+    // Route to update user profile
+    router.post('/updateuser', fetchuser, async (req, res) =>{
+        
+        try {
+
+            const user = await Updateuser.create({
+                user: req.user.id,
+                bloodgroup : req.body.bloodgroup,
+                age : req.body.age,
+                gender : req.body.gender
+            })
+            
+            success = true
+            res.json({success})
+        
+        
+    }    
+        
+        catch (error) {
+            console.log(error.message)
+            res.status(500).send("Some error occured")
+        }
+        
+        
+    })
+
+
+  // Route to update user old deases
+  router.post('/updateuserdeases', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await Updateuserdeases.create({
+            user: req.user.id,
+            deases : req.body.deases,
+            from : req.body.from,
+            consultation : req.body.consultation,
+            isrecovered : req.body.isrecovered
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+    
+    catch (error) {
+        console.log(error.message)
+        res.status(500).send("Some error occured")
+    }
+    
+    
+})
 
 
     // Route 3 to get user details

@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 // Available routes
 app.use('/api/user', require('./routes/user'))
 app.use('/api/doctor', require('./routes/doctor'))
-// app.use('/api/notes', require('./routes/note'))
+app.use('/api/chat', require('./routes/chat'))
 
 
 
