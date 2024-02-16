@@ -116,6 +116,9 @@ router.post('/login', [
             yrofgraduation : req.body.yrofgraduation,
             experience : req.body.experience,
             type : req.body.type,
+            location : req.body.location,
+            about : req.body.about,
+            fees : req.body.fees,
             govno : req.body.govno
         })
         

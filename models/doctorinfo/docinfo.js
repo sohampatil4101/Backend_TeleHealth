@@ -26,6 +26,18 @@ const docSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    loaction:{  
+        type: String,
+        required: false
+    },
+    about:{  
+        type: String,
+        required: false
+    },
+    fees:{  
+        type: String,
+        required: false
+    },
     date:{
         type: Date,
         default: Date.now
