@@ -104,7 +104,7 @@ router.post('/login', [
     )
 
 
-    // Route to update user old deases
+    // Route to update doctor info
   router.post('/doctorinfo', fetchuser, async (req, res) =>{
         
     try {
@@ -119,7 +119,8 @@ router.post('/login', [
             location : req.body.location,
             about : req.body.about,
             fees : req.body.fees,
-            govno : req.body.govno
+            govno : req.body.govno,
+            number : req.body.number
         })
         
         success = true

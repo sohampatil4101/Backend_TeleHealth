@@ -112,6 +112,7 @@ router.post('/login', [
             const user = await Updateuser.create({
                 user: req.user.id,
                 bloodgroup : req.body.bloodgroup,
+                number : req.body.number,
                 age : req.body.age,
                 gender : req.body.gender
             })

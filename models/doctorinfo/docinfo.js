@@ -42,6 +42,10 @@ const docSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    number:{  
+        type: String,
+        required: false
+    },
     date:{
         type: Date,
         default: Date.now
