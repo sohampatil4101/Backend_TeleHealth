@@ -10,7 +10,7 @@ const JWT_SECRET = 'masknxanxlanla';
 
 
 // Route to book appoinment
-router.post('/postblog', fetchuser, async (req, res) =>{
+router.post('/postblog', async (req, res) =>{
         
     try {
 
