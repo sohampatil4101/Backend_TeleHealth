@@ -185,7 +185,18 @@ router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
 // route for doc to fetch all doctors
 router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
     try {
-        const notes = await doctor.find();
+        const notes = await docinfo.find();
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+// route for doc to fetch all doctors
+router.post('/fetchdoctor', fetchuser, async(req, res) =>{
+    try {
+        const notes = await docinfo.find({doctor:req.body.doctor});
         res.json(notes)
     } catch (error) {
     console.log(error.message)
