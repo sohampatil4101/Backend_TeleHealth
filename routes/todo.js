@@ -10,7 +10,7 @@ const JWT_SECRET = 'masknxanxlanla';
 
 
 
-// Route to book appoinment
+// post todo
 router.post('/posttodo', fetchuser, async (req, res) =>{
         
     try {
@@ -35,7 +35,8 @@ catch (error) {
 
 })
 
-// route for doc to fetch all his appoinment
+
+// fetch todo
 router.get('/fetchmytodo', fetchuser, async(req, res) =>{
     try {
         const notes = await todo.find({user: req.user.id});
@@ -47,9 +48,33 @@ router.get('/fetchmytodo', fetchuser, async(req, res) =>{
 })
 
 
+// Route to delete a todo
+router.delete('/deletetodo/:id', fetchuser, async (req, res) => {
+    try {
+        // Extract todo ID from request parameters
+        const todoId = req.params.id;
+        
+        // Find the todo by ID and ensure it belongs to the logged-in user
+        const todoToDelete = await todo.findOne({ _id: todoId, user: req.user.id });
+
+        // If todo is not found or doesn't belong to the user, return an error
+        if (!todoToDelete) {
+            return res.status(404).json({ error: 'Todo not found' });
+        }
+
+        // Delete the todo
+        await todo.deleteOne({ _id: todoId });
+
+        // Return success response
+        res.json({ success: true, message: 'Todo deleted successfully' });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Some error occurred');
+    }
+});
 
 
-// Route to add score
+
 // Route to add score
 router.post('/posttodosscore', fetchuser, async (req, res) => {
     try {
