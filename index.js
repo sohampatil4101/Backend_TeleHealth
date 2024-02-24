@@ -25,6 +25,7 @@ app.use('/api/blog', require('./routes/blog'))
 // mental health
 app.use('/api/todo', require('./routes/todo'))
 app.use('/api/note', require('./routes/note'))
+app.use('/api/sentiments', require('./routes/sentiments'))
 
 
 
