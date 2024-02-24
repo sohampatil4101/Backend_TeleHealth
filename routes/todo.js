@@ -50,28 +50,32 @@ router.get('/fetchmytodo', fetchuser, async(req, res) =>{
 
 
 // Route to add score
-router.post('/posttodosscore', fetchuser, async (req, res) =>{
-        
+// Route to add score
+router.post('/posttodosscore', fetchuser, async (req, res) => {
     try {
-        console.log(req.user.id)
-        const user = await todoscore.create({
-            user: req.user.id,
-            score : req.body.score
-        })
-        
-        success = true
-        res.json({success})
-    
-    
-}    
+        console.log(req.user.id);
+        const existingScore = await todoscore.findOne({ user: req.user.id });
 
-catch (error) {
-    console.log(error.message)
-    res.status(500).send("Some error occured")
-}
+        if (!existingScore) {
+            // If no score entry exists for the user, create a new one
+            const newScore = new todoscore({
+                user: req.user.id,
+                score: req.body.score
+            });
+            await newScore.save();
+        } else {
+            // If a score entry exists, update the score by adding the provided score
+            existingScore.score += req.body.score;
+            await existingScore.save();
+        }
 
+        res.json({ success: true });
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
 
-})
 
 // route to get the score
 router.get('/fetchmytodoscore', fetchuser, async(req, res) =>{
