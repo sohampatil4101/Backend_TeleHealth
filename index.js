@@ -22,6 +22,10 @@ app.use('/api/doctor', require('./routes/doctor'))
 app.use('/api/chat', require('./routes/chat'))
 app.use('/api/blog', require('./routes/blog'))
 
+// mental health
+app.use('/api/todo', require('./routes/todo'))
+
+
 
 app.listen(port, () => {
   console.log(`Backend app listening on port ${port}`)
