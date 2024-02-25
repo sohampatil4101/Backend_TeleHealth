@@ -36,7 +36,7 @@ catch (error) {
 
 
 // fetch todo
-router.get('/fetchmysentiments', fetchuser, async(req, res) =>{
+router.post('/fetchmysentiments', fetchuser, async(req, res) =>{
     try {
         const notes = await sentiments.find({user: req.user.id});
         res.json(notes)
