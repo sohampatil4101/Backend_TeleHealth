@@ -15,6 +15,3 @@ const connectToMongo = ()=>{ mongoose.connect("mongodb+srv://patilsoham390:0xIbJ
 
 
 module.exports = connectToMongo;    
-
-
-// 0xIbJjZwqTpHoPm9
