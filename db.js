@@ -15,6 +15,3 @@ const connectToMongo = ()=>{ mongoose.connect("mongodb://0.0.0.0:27017/TeleHealt
 
 
 module.exports = connectToMongo;    
-
-
-// 0xIbJjZwqTpHoPm9
