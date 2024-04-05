@@ -33,6 +33,10 @@ const AppoinmentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    meetcode:{
+        type: String,
+        required: false
+    },
 
 
 

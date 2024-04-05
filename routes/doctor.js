@@ -76,18 +76,18 @@ router.post('/login', [
 
         const{email, password} = req.body;
         try {
-            const user = await Doctor.findOne({email});
-            if(!user){
+            const doctor = await Doctor.findOne({email});
+            if(!doctor){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
-            const passwordcompare = await bcrypt.compare(password, user.password);
+            const passwordcompare = await bcrypt.compare(password, doctor.password);
             if(!passwordcompare){
                 return res.status(400).json({success, error: "Please try to login with correct cridentials"})
             }
             
         const data = {
-            user:{
-                id: user.id
+            doctor:{
+                id: doctor.id
             }
         }
         const jwtdata = jwt.sign(data, JWT_SECRET);
@@ -108,9 +108,6 @@ router.post('/login', [
   router.post('/doctorinfo', fetchdoctor, async (req, res) =>{
         
     try {
-        console.log("req.user.id")
-        console.log(req.doctor.id)
-        console.log("user.id")
         const user = await Docinfo.create({
             doctor: req.doctor.id,
             uniqueid : req.body.uniqueid,
@@ -142,41 +139,11 @@ router.post('/login', [
 
 
 
-// Route to book appoinment
-   router.post('/bookappoinment', fetchuser, async (req, res) =>{
-        
-    try {
-
-        const user = await appoinment.create({
-            user: req.user.id,
-            doctor: req.body.doctor,
-            date : req.body.date,
-            time : req.body.time,
-            customschedule : req.body.customschedule,
-            package : req.body.package,
-            duration : req.body.duration,
-            problem : req.body.problem,
-        })
-        
-        success = true
-        res.json({success})
-    
-    
-}    
-
-catch (error) {
-    console.log(error.message)
-    res.status(500).send("Some error occured")
-}
-
-
-})
-
 
 // route for doc to fetch all his appoinment
-router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
+router.get('/fetchallappoinments', fetchdoctor, async(req, res) =>{
     try {
-        const notes = await appoinment.find({doctor: req.user.id});
+        const notes = await appoinment.find({doctor: req.doctor.id});
         res.json(notes)
     } catch (error) {
     console.log(error.message)
@@ -185,21 +152,11 @@ router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
 })
 
 
-// route for doc to fetch all doctors
-router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
-    try {
-        const notes = await docinfo.find().populate('doctor');
-        res.json(notes)
-    } catch (error) {
-    console.log(error.message)
-    res.status(500).send("Some error occured")
-    }
-})
 
 // route for doc to fetch all doctors
 router.post('/fetchdoctor', fetchuser, async(req, res) =>{
     try {
-        const notes = await docinfo.find({doctor:req.body.doctor});
+        const notes = await Docinfo.find({doctor:req.body.doctor});
         res.json(notes)
     } catch (error) {
     console.log(error.message)
@@ -209,31 +166,6 @@ router.post('/fetchdoctor', fetchuser, async(req, res) =>{
 
 
 
-// Route to post review
-   router.post('/postreview', fetchuser, async (req, res) =>{
-        
-    try {
-
-        const user = await review.create({
-            user: req.user.id,
-            doctor: req.body.doctor,
-            review : req.body.review,
-            rating : req.body.rating
-        })
-        
-        success = true
-        res.json({success})
-    
-    
-}    
-    
-    catch (error) {
-        console.log(error.message)
-        res.status(500).send("Some error occured")
-    }
-    
-    
-})
 
 
 router.get('/getreviews', fetchuser, async(req, res) =>{
@@ -249,25 +181,6 @@ router.get('/getreviews', fetchuser, async(req, res) =>{
 
 
 
-
-
-
-    // Route 3 to get user details
-
-
-    router.post('/getuser', fetchuser,async (req, res) =>{
-        try {
-             userId = req.user.id;
-            const user = await User.findById(userId).select("-password")
-            res.send(user)
-        } 
-    
-        catch (error) {
-            console.log(error.message)
-            res.status(500).send("Internal server error occured")
-        }
-        
-    })
 
 
 

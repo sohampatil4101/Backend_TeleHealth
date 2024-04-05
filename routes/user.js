@@ -177,4 +177,89 @@ router.post('/login', [
         
     })
 
+
+
+
+// Route to book appoinment
+router.post('/bookappoinment', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await appoinment.create({
+            user: req.user.id,
+            doctor: req.body.doctor,
+            date : req.body.date,
+            time : req.body.time,
+            customschedule : req.body.customschedule,
+            package : req.body.package,
+            duration : req.body.duration,
+            problem : req.body.problem,
+            meetcode : req.body.meetcode
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+
+catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+}
+
+
+})
+
+
+router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
+    try {
+        const notes = await appoinment.find({user: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+// route for doc to fetch all doctors
+router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
+    try {
+        const notes = await Docinfo.find().populate('doctor');
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+// Route to post review
+router.post('/postreview', fetchuser, async (req, res) =>{
+        
+    try {
+
+        const user = await review.create({
+            user: req.user.id,
+            doctor: req.body.doctor,
+            review : req.body.review,
+            rating : req.body.rating
+        })
+        
+        success = true
+        res.json({success})
+    
+    
+}    
+    
+    catch (error) {
+        console.log(error.message)
+        res.status(500).send("Some error occured")
+    }
+    
+    
+})
+
+
 module.exports = router
