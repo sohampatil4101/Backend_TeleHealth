@@ -1,6 +1,6 @@
 const express = require('express')
 const Doctor = require('../models/Doctor')
-const docinfo = require('../models/doctorinfo/docinfo')
+const Docinfo = require('../models/doctorinfo/Docinfo')
 const appoinment = require('../models/appoinment/Appoinment')
 const review = require('../models/review/review')
 const router = require('express').Router();
@@ -8,6 +8,7 @@ const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
+const fetchdoctor = require('../middleware/fetchdoctor');
 const JWT_SECRET = 'masknxanxlanla';
 
 const validate = [
@@ -104,12 +105,14 @@ router.post('/login', [
 
 
     // Route to update doctor info
-  router.post('/doctorinfo', fetchuser, async (req, res) =>{
+  router.post('/doctorinfo', fetchdoctor, async (req, res) =>{
         
     try {
-
-        const user = await docinfo.create({
-            doctor: req.user.id,
+        console.log("req.user.id")
+        console.log(req.doctor.id)
+        console.log("user.id")
+        const user = await Docinfo.create({
+            doctor: req.doctor.id,
             uniqueid : req.body.uniqueid,
             specialization : req.body.specialization,
             yrofgraduation : req.body.yrofgraduation,
@@ -185,7 +188,7 @@ router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
 // route for doc to fetch all doctors
 router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
     try {
-        const notes = await docinfo.find();
+        const notes = await docinfo.find().populate('doctor');
         res.json(notes)
     } catch (error) {
     console.log(error.message)
