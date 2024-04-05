@@ -11,12 +11,7 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique:true
-    },
-    review:{
-        type: String,
-        required: true
-    },
-    
+    },    
     password:{
         type: String,
         required: true
