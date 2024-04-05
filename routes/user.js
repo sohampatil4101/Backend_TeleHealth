@@ -2,7 +2,7 @@ const express = require('express')
 const User = require('../models/User')
 const Updateuser = require('../models/user_medi_info/UserInfo')
 const Updateuserdeases = require('../models/user_medi_info/OldMedi_info')
-// const Docinfo = require('../models/doctorinfo/Docinfo')
+const docinfo = require('../models/doctorinfo/docinfo')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -209,15 +209,15 @@ router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
 
 
 // route for doc to fetch all doctors
-// router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
-//     try {
-//         const notes = await Docinfo.find().populate('doctor');
-//         res.json(notes)
-//     } catch (error) {
-//     console.log(error.message)
-//     res.status(500).send("Some error occured")
-//     }
-// })
+router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
+    try {
+        const notes = await docinfo.find().populate('doctor');
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 // Route to post review
