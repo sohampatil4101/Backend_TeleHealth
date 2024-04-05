@@ -1,6 +1,6 @@
 const express = require('express')
 const Doctor = require('../models/Doctor')
-const Docinfo = require('../models/doctorinfo/Docinfo')
+// const Docinfo = require('../models/doctorinfo/Docinfo')
 const appoinment = require('../models/appoinment/Appoinment')
 const review = require('../models/review/review')
 const router = require('express').Router();
@@ -105,36 +105,36 @@ router.post('/login', [
 
 
     // Route to update doctor info
-  router.post('/doctorinfo', fetchdoctor, async (req, res) =>{
+//   router.post('/doctorinfo', fetchdoctor, async (req, res) =>{
         
-    try {
-        const user = await Docinfo.create({
-            doctor: req.doctor.id,
-            uniqueid : req.body.uniqueid,
-            specialization : req.body.specialization,
-            yrofgraduation : req.body.yrofgraduation,
-            experience : req.body.experience,
-            type : req.body.type,
-            location : req.body.location,
-            about : req.body.about,
-            fees : req.body.fees,
-            govno : req.body.govno,
-            number : req.body.number
-        })
+//     try {
+//         const user = await Docinfo.create({
+//             doctor: req.doctor.id,
+//             uniqueid : req.body.uniqueid,
+//             specialization : req.body.specialization,
+//             yrofgraduation : req.body.yrofgraduation,
+//             experience : req.body.experience,
+//             type : req.body.type,
+//             location : req.body.location,
+//             about : req.body.about,
+//             fees : req.body.fees,
+//             govno : req.body.govno,
+//             number : req.body.number
+//         })
         
-        success = true
-        res.json({success})
+//         success = true
+//         res.json({success})
     
     
-}    
+// }    
     
-    catch (error) {
-        console.log(error.message)
-        res.status(500).send("Some error occured")
-    }
+//     catch (error) {
+//         console.log(error.message)
+//         res.status(500).send("Some error occured")
+//     }
     
     
-})
+// })
 
 
 
@@ -154,15 +154,15 @@ router.get('/fetchallappoinments', fetchdoctor, async(req, res) =>{
 
 
 // route for doc to fetch all doctors
-router.post('/fetchdoctor', fetchuser, async(req, res) =>{
-    try {
-        const notes = await Docinfo.find({doctor:req.body.doctor});
-        res.json(notes)
-    } catch (error) {
-    console.log(error.message)
-    res.status(500).send("Some error occured")
-    }
-})
+// router.post('/fetchdoctor', fetchuser, async(req, res) =>{
+//     try {
+//         const notes = await Docinfo.find({doctor:req.body.doctor});
+//         res.json(notes)
+//     } catch (error) {
+//     console.log(error.message)
+//     res.status(500).send("Some error occured")
+//     }
+// })
 
 
 
