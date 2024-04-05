@@ -2,12 +2,13 @@ const express = require('express')
 const User = require('../models/User')
 const Updateuser = require('../models/user_medi_info/UserInfo')
 const Updateuserdeases = require('../models/user_medi_info/OldMedi_info')
-const Docinfo = require('../models/doctorinfo/Docinfo')
+// const Docinfo = require('../models/doctorinfo/Docinfo')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
+const fetchdoctor = require('../middleware/fetchdoctor');
 const JWT_SECRET = 'masknxanxlanla';
 
 const validate = [
@@ -161,23 +162,6 @@ router.post('/login', [
 })
 
 
-    // Route 3 to get user details
-
-
-    router.post('/getuser', fetchuser,async (req, res) =>{
-        try {
-             userId = req.user.id;
-            const user = await User.findById(userId).select("-password")
-            res.send(user)
-        } 
-    
-        catch (error) {
-            console.log(error.message)
-            res.status(500).send("Internal server error occured")
-        }
-        
-    })
-
 
 
 
@@ -225,15 +209,15 @@ router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
 
 
 // route for doc to fetch all doctors
-router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
-    try {
-        const notes = await Docinfo.find().populate('doctor');
-        res.json(notes)
-    } catch (error) {
-    console.log(error.message)
-    res.status(500).send("Some error occured")
-    }
-})
+// router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
+//     try {
+//         const notes = await Docinfo.find().populate('doctor');
+//         res.json(notes)
+//     } catch (error) {
+//     console.log(error.message)
+//     res.status(500).send("Some error occured")
+//     }
+// })
 
 
 // Route to post review
