@@ -7,6 +7,11 @@ const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const appoinment = require('../models/appoinment/Appoinment')
+
+
+
+
 const fetchuser = require('../middleware/fetchuser');
 const fetchdoctor = require('../middleware/fetchdoctor');
 const JWT_SECRET = 'masknxanxlanla';
