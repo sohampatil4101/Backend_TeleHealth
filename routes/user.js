@@ -344,7 +344,8 @@ router.get('/getehr', fetchuser, async(req, res) =>{
 
 router.post('/editpermission', fetchuser, async(req, res) =>{
     try {
-        const notes = await ehr.find({user: req.user.id, _id: req.body.fileid});
+        const notes = await ehr.find({user: "660b895bec9ecb03b6f61047", _id: req.body.fileid});
+        console.log("soham is great!!")
         res.json(notes)
     } catch (error) {
     console.log(error.message)
