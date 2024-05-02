@@ -9,6 +9,7 @@ const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const appoinment = require('../models/appoinment/Appoinment')
+const crypto = require('crypto');
 
 
 
@@ -23,6 +24,22 @@ const validate = [
     body('password', 'password must be atleast 5 characters and alphanumeric').isLength({min:5}).isAlphanumeric(),
 ]
 
+
+// Encryption function
+function encryptText(text, key) {
+    const cipher = crypto.createCipher('aes-256-cbc', key);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+}
+
+// Decryption function
+function decryptText(encryptedText, key) {
+    const decipher = crypto.createDecipher('aes-256-cbc', key);
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+}
 
 // Route 1 to create user
 router.post('/', validate, async (req, res) =>{
@@ -255,9 +272,9 @@ router.post('/postreview', fetchuser, async (req, res) =>{
 
 
 // file upload logic 
+const path = require('path');
+const multer = require('multer');
 
-const path = require('path')
-const multer  = require('multer')
 const storage = multer.diskStorage({    
     destination: function(req, file, cb) {
         cb(null, 'uploads/')
@@ -266,19 +283,28 @@ const storage = multer.diskStorage({
         let ext = path.extname(file.originalname)
         cb(null, Date.now() + ext)
     }
-})
+});
 
-const upload = multer({ storage: storage })
-// app.use('/uploads', express.static())
+const upload = multer({ storage: storage });
 
-
-
-// route for updateing user profile
+// route for updating user profile
 router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
     try {
-        console.log(req.file.originalname);
+        // Log the generated filename
+        // console.log("Uploaded file:", req.file.filename);
+        
+        // Your encryption logic here
+        const secretKey = req.user.id;
+
+        const encryptedfile = encryptText(req.file.filename, secretKey);
+        console.log("Encrypted file name:", encryptedfile);
+        
+        const decryptedfile = decryptText(encryptedfile, secretKey);
+        console.log("Decrypted file name:", decryptedfile);
+
+        // Your database save logic here
         const user = await ehr.create({
-            ehr: req.file.filename
+            ehr: encryptedfile
         });
         const success = true;
         res.json({ success });
@@ -289,6 +315,17 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
 });
 
 
+
+// // Example usage
+// const text = "This is a secret message!";
+
+// // Encrypt the text
+// const encryptedText = encryptText(text, secretKey);
+// console.log("Encrypted Text:", encryptedText);
+
+// // Decrypt the text
+// const decryptedText = decryptText(encryptedText, secretKey);
+// console.log("Decrypted Text:", decryptedText);
 
 
 module.exports = router
