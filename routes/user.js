@@ -313,17 +313,18 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
 
 router.get('/getallmyehr', fetchuser, async (req, res) => {
     try {
-        // const secretKey = req.user.id;
-        console.log(req.user.id)
-        const notes = await ehr.find({user: req.user.id});
-        // const ehrValues = notes.map(note => decryptText(note.ehr, secretKey));
-        const ehrValues = notes.map(note => note.title);
+        secretKey = req.user.id
+        const notes = await ehr.find({ user: req.user.id });
+        const ehrValues = notes.map(note => ({
+            [note.title]: decryptText(note.ehr, secretKey)
+        }));
         res.json(ehrValues);
     } catch (error) {
         console.log(error.message);
         res.status(500).send("Some error occurred");
     }
 });
+
 
 // get ehr for doctor
 router.get('/getehr', fetchuser, async(req, res) =>{
