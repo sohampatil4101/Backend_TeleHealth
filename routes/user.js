@@ -317,7 +317,9 @@ router.get('/getallmyehr', fetchuser, async (req, res) => {
         const secretKey = req.user.id
         const ehrValues = notes.map(note => ({
             title: note.title,
-            path: decryptText(note.ehr, secretKey)
+            permission: note.permission,
+            path: decryptText(note.ehr, secretKey),
+            date: note.date
         }));
 
         res.json(ehrValues);
