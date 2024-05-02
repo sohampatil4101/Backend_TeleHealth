@@ -6,6 +6,7 @@ const review = require('../models/review/review')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const prescription = require('../models/prescription')
+const user = require('../models/User')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
@@ -178,6 +179,18 @@ router.get('/getreviews', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+
+router.post('/searchuser', fetchuser, async(req, res) => {
+    try {
+        const regex = new RegExp("^" + req.body.name, "i");
+        const users = await user.find({ name: regex });
+
+        res.json(users);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
 
 
 router.post('/postprescription', fetchdoctor, async (req, res) => {

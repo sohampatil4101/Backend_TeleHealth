@@ -241,6 +241,15 @@ router.get('/fetchalldoctors', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+router.post('/fetchspecificdoctors', fetchuser, async(req, res) =>{
+    try {
+        const notes = await docinfo.findOne({_id:req.body._id}).populate('doctor');
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 // Route to post review
@@ -373,6 +382,16 @@ router.post('/prescriptionstatus', fetchuser, async(req, res) =>{
         const notes = await prescription.findOne({_id: req.body._id});
         notes.readstatus = "read"
         await notes.save();
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+router.post('/fetchuserdetails', fetchuser, async(req, res) =>{
+    try {
+        const notes = await User.findOne({_id: req.body._id});
         res.json(notes)
     } catch (error) {
     console.log(error.message)
