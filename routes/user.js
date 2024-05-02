@@ -278,7 +278,7 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
     try {
         console.log(req.file.originalname);
         const user = await ehr.create({
-            ehr: req.file.originalname
+            ehr: req.file.filename
         });
         const success = true;
         res.json({ success });
