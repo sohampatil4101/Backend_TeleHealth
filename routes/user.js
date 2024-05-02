@@ -3,6 +3,7 @@ const User = require('../models/User')
 const Updateuser = require('../models/user_medi_info/UserInfo')
 const Updateuserdeases = require('../models/user_medi_info/OldMedi_info')
 const docinfo = require('../models/doctorinfo/docinfo')
+const ehr = require('../models/Ehr')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -250,6 +251,44 @@ router.post('/postreview', fetchuser, async (req, res) =>{
     
     
 })
+
+
+
+// file upload logic 
+
+const path = require('path')
+const multer  = require('multer')
+const storage = multer.diskStorage({    
+    destination: function(req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function(req, file, cb) {
+        let ext = path.extname(file.originalname)
+        cb(null, Date.now() + ext)
+    }
+})
+
+const upload = multer({ storage: storage })
+// app.use('/uploads', express.static())
+
+
+
+// route for updateing user profile
+router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
+    try {
+        console.log(req.file.originalname);
+        const user = await ehr.create({
+            ehr: req.file.originalname
+        });
+        const success = true;
+        res.json({ success });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
+
+
 
 
 module.exports = router
