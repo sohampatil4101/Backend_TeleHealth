@@ -316,6 +316,7 @@ router.get('/getallmyehr', fetchuser, async (req, res) => {
         const notes = await ehr.find({ user: req.user.id });
         const secretKey = req.user.id
         const ehrValues = notes.map(note => ({
+            _id: note._id,
             title: note.title,
             permission: note.permission,
             path: decryptText(note.ehr, secretKey),
@@ -334,6 +335,16 @@ router.get('/getallmyehr', fetchuser, async (req, res) => {
 router.get('/getehr', fetchuser, async(req, res) =>{
     try {
         const notes = await appoinment.find({user: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+router.post('/editpermission', fetchuser, async(req, res) =>{
+    try {
+        const notes = await ehr.find({user: req.user.id, _id: req.body.fileid});
         res.json(notes)
     } catch (error) {
     console.log(error.message)
