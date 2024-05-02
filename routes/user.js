@@ -360,23 +360,25 @@ router.post('/editpermission', fetchuser, async(req, res) => {
 // get ehr for doctor
 router.get('/getprescription', fetchuser, async(req, res) =>{
     try {
-        const prescriptions = await prescription.find({ user: "6094a4ef683635001f6e7e63" });
-
-        // Modify prescriptions where title is "abc" to "lsd"
-        const modifiedPrescriptions = prescriptions.map(prescription => {
-            if (prescription.readstatus === "unread") {
-                prescription.readstatus = "read";
-            }
-            return prescription;
-        });
-
-        res.json(modifiedPrescriptions);
+        const notes = await prescription.find({user: req.user.id});
+        res.json(notes)
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send("Some error occurred");
+    console.log(error.message)
+    res.status(500).send("Some error occured")
     }
-});
+})
 
+router.post('/prescriptionstatus', fetchuser, async(req, res) =>{
+    try {
+        const notes = await prescription.findOne({_id: req.body._id});
+        notes.readstatus = "read"
+        await notes.save();
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 // // Example usage
 // const text = "This is a secret message!";
