@@ -5,6 +5,7 @@ const appoinment = require('../models/appoinment/Appoinment')
 const review = require('../models/review/review')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
+const prescription = require('../models/prescription')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const fetchuser = require('../middleware/fetchuser');
@@ -179,6 +180,21 @@ router.get('/getreviews', fetchuser, async(req, res) =>{
 })
 
 
+router.post('/postprescription', fetchdoctor, async (req, res) => {
+    try {
+        const user = await prescription.create({
+            doctor: req.doctor.id,
+            user: req.body.userid,
+            title: req.body.title,
+            prescription: req.body.prescription
+        });
+        const success = true;
+        res.json({ success });
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
 
 
 
