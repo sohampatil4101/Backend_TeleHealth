@@ -313,11 +313,13 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
 
 router.get('/getallmyehr', fetchuser, async (req, res) => {
     try {
-        secretKey = req.user.id
         const notes = await ehr.find({ user: req.user.id });
+        const secretKey = req.user.id
         const ehrValues = notes.map(note => ({
-            [note.title]: decryptText(note.ehr, secretKey)
+            title: note.title,
+            path: decryptText(note.ehr, secretKey)
         }));
+
         res.json(ehrValues);
     } catch (error) {
         console.log(error.message);
