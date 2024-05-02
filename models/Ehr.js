@@ -6,8 +6,17 @@ const EhrSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user',
     },  
+    title: {
+        type: String, 
+        required: false
+      },
     ehr: {
         type: String, 
+        required: false
+      },
+    permission: {
+        type: String, 
+        default: "private",
         required: false
       },
     date:{

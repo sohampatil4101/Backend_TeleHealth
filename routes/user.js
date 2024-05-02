@@ -304,7 +304,8 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
 
         // Your database save logic here
         const user = await ehr.create({
-            ehr: encryptedfile
+            ehr: encryptedfile,
+            title: req.body.title
         });
         const success = true;
         res.json({ success });
@@ -314,6 +315,32 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
     }
 });
 
+// get uploded all files in dycripted format
+
+router.get('/getallmyehr', fetchuser, async (req, res) => {
+    try {
+        const secretKey = req.user.id;
+        const notes = await ehr.find();
+        // Extracting only the "ehr" values
+        // console.log(decryptText(note.ehr, secretKey))
+        const ehrValues = notes.map(note => note.ehr  );
+        res.json(ehrValues);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Some error occurred");
+    }
+});
+
+// get ehr for doctor
+router.get('/getehr', fetchuser, async(req, res) =>{
+    try {
+        const notes = await appoinment.find({user: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 // // Example usage
