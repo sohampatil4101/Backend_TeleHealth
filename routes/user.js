@@ -9,7 +9,7 @@ const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const appoinment = require('../models/appoinment/Appoinment')
-const crypto = require('crypto');
+var CryptoJS = require("crypto-js");
 
 
 
@@ -27,18 +27,17 @@ const validate = [
 
 // Encryption function
 function encryptText(text, key) {
-    const cipher = crypto.createCipher('aes-256-cbc', key);
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
+    const encJson = CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
+    const encData = CryptoJS.enc.Base64.stringify(
+      CryptoJS.enc.Utf8.parse(encJson)
+    );
+    return encData;
 }
-
 // Decryption function
 function decryptText(encryptedText, key) {
-    const decipher = crypto.createDecipher('aes-256-cbc', key);
-    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-    decrypted += decipher.final('utf8');
-    return decrypted;
+    const decData = CryptoJS.enc.Base64.parse(encryptedText).toString(CryptoJS.enc.Utf8);
+    const bytes = CryptoJS.AES.decrypt(decData, key).toString(CryptoJS.enc.Utf8);
+    return JSON.parse(bytes);
 }
 
 // Route 1 to create user
@@ -290,20 +289,15 @@ const upload = multer({ storage: storage });
 // route for updating user profile
 router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
     try {
-        // Log the generated filename
-        // console.log("Uploaded file:", req.file.filename);
-        
-        // Your encryption logic here
         const secretKey = req.user.id;
-
         const encryptedfile = encryptText(req.file.filename, secretKey);
         console.log("Encrypted file name:", encryptedfile);
         
         const decryptedfile = decryptText(encryptedfile, secretKey);
         console.log("Decrypted file name:", decryptedfile);
 
-        // Your database save logic here
         const user = await ehr.create({
+            user: req.user.id,
             ehr: encryptedfile,
             title: req.body.title
         });
@@ -319,11 +313,11 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
 
 router.get('/getallmyehr', fetchuser, async (req, res) => {
     try {
-        const secretKey = req.user.id;
-        const notes = await ehr.find();
-        // Extracting only the "ehr" values
-        // console.log(decryptText(note.ehr, secretKey))
-        const ehrValues = notes.map(note => note.ehr  );
+        // const secretKey = req.user.id;
+        console.log(req.user.id)
+        const notes = await ehr.find({user: req.user.id});
+        // const ehrValues = notes.map(note => decryptText(note.ehr, secretKey));
+        const ehrValues = notes.map(note => note.title);
         res.json(ehrValues);
     } catch (error) {
         console.log(error.message);
