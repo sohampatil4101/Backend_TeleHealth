@@ -344,7 +344,7 @@ router.get('/getehr', fetchuser, async(req, res) =>{
 
 router.post('/editpermission', fetchuser, async(req, res) => {
     try {
-        const note = await ehr.findOne({ user: "660b895bec9ecb03b6f61047", _id: req.body.fileid });
+        const note = await ehr.findOne({ user: req.user.id, _id: req.body.fileid });
         const newPermission = note.permission === "public" ? "private" : "public";
         await ehr.findByIdAndUpdate(note._id, { permission: newPermission });
         const updatedNote = await ehr.findById(note._id);
