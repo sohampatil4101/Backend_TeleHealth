@@ -409,7 +409,7 @@ router.post('/fetchuserdetails', fetchuser, async(req, res) =>{
 
 router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
     try {
-        const notes = await permission.find({user: req.user.id});
+        const notes = await permission.find({user: "660b895bec9ecb03b6f61047"}).populate('doctor').populate('ehr');
         res.json(notes)
     } catch (error) {
     console.log(error.message)
