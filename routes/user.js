@@ -352,11 +352,17 @@ router.get('/getehr', fetchuser, async(req, res) =>{
     }
 })
 
-router.post('/editpermission', fetchuser, async(req, res) => {
+
+
+router.post('/editpermission', fetchuser, async (req, res) => {
     try {
+        const secretKey = req.user.id
         const note = await ehr.findOne({ user: req.user.id, _id: req.body.fileid });
         const newPermission = note.permission === "public" ? "private" : "public";
-        await ehr.findByIdAndUpdate(note._id, { permission: newPermission });
+        console.log("Soham", note.ehr)
+        const newEhr = note.permission === "public" ? encryptText(note.ehr, secretKey) : decryptText(note.ehr, secretKey);
+
+        await ehr.findByIdAndUpdate(note._id, { permission: newPermission, ehr: newEhr });
         const updatedNote = await ehr.findById(note._id);
         res.json(updatedNote);
     } catch (error) {
@@ -364,6 +370,7 @@ router.post('/editpermission', fetchuser, async(req, res) => {
         res.status(500).send("Some error occurred");
     }
 });
+
 
 
 // get ehr for doctor

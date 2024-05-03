@@ -3,6 +3,7 @@ const Doctor = require('../models/Doctor')
 const docinfo = require('../models/doctorinfo/docinfo')
 const appoinment = require('../models/appoinment/Appoinment')
 const review = require('../models/review/review')
+const ehr = require('../models/Ehr')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const prescription = require('../models/prescription')
@@ -159,6 +160,16 @@ router.get('/fetchallappoinments', fetchdoctor, async(req, res) =>{
 router.post('/fetchdoctor', fetchuser, async(req, res) =>{
     try {
         const notes = await docinfo.find({doctor:req.body.doctor});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+router.post('/getuserfiles', fetchdoctor, async(req, res) =>{
+    try {
+        const notes = await ehr.find({user:req.body.user}).populate('user');
         res.json(notes)
     } catch (error) {
     console.log(error.message)
