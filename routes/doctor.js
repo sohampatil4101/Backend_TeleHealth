@@ -183,7 +183,7 @@ router.post('/requestpermission', fetchdoctor, async(req, res) =>{
         const user = await permission.create({
             ehr : req.body.ehr,
             user : req.body.user,
-            doctor : req.body.doctor
+            doctor : req.doctor.id
         })
         success = true
         res.json({success})    
