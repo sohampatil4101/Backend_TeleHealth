@@ -145,7 +145,7 @@ router.post('/login', [
 // route for doc to fetch all his appoinment
 router.get('/fetchallappoinments', fetchdoctor, async(req, res) =>{
     try {
-        const notes = await appoinment.find({doctor: req.doctor.id});
+        const notes = await appoinment.find({doctor: req.doctor.id}).populate('user');
         res.json(notes)
     } catch (error) {
     console.log(error.message)
