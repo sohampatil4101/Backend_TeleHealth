@@ -5,6 +5,7 @@ const Updateuserdeases = require('../models/user_medi_info/OldMedi_info')
 const docinfo = require('../models/doctorinfo/docinfo')
 const ehr = require('../models/Ehr')
 const prescription = require('../models/prescription')
+const permission = require('../models/permission')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
@@ -405,6 +406,17 @@ router.post('/fetchuserdetails', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+
+router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
+    try {
+        const notes = await permission.find({user: "660b895bec9ecb03b6f61047"});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
 
 // // Example usage
 // const text = "This is a secret message!";

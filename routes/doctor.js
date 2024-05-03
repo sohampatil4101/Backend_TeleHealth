@@ -4,6 +4,7 @@ const docinfo = require('../models/doctorinfo/docinfo')
 const appoinment = require('../models/appoinment/Appoinment')
 const review = require('../models/review/review')
 const ehr = require('../models/Ehr')
+const permission = require('../models/permission')
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 const prescription = require('../models/prescription')
@@ -172,6 +173,22 @@ router.post('/getuserfiles', fetchdoctor, async(req, res) =>{
         const notes = await ehr.find({user:req.body.user}).populate('user');
         res.json(notes)
     } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+router.post('/requestpermission', fetchdoctor, async(req, res) =>{
+    try {
+        const user = await permission.create({
+            ehr : req.body.ehr,
+            user : req.body.user,
+            doctor : req.body.doctor
+        })
+        success = true
+        res.json({success})    
+}    
+    catch (error) {
     console.log(error.message)
     res.status(500).send("Some error occured")
     }
