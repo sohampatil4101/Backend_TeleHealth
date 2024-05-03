@@ -222,7 +222,7 @@ catch (error) {
 
 router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
     try {
-        const notes = await appoinment.find({user: req.user.id});
+        const notes = await appoinment.find({user: req.user.id}).populate('user');
         res.json(notes)
     } catch (error) {
     console.log(error.message)
