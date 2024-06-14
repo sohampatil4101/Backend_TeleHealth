@@ -273,8 +273,12 @@ router.post('/fetchspecializationdoctor', fetchuser, async(req, res) =>{
 })
 router.post('/getslotdetail', fetchuser, async(req, res) =>{
     try {
-        const notes = await appoinment.findOne({doctor:req.body.doctor, days:req.body.days, }).populate('doctor');
-        res.json(notes.slot)
+        arr = []
+        const notes = await appoinment.find({doctor:req.body.doctor, days:req.body.days});
+        for(var i = 0; i<notes.length; i++){
+            arr[i] = notes[i].slot
+        }
+        res.json(arr)
     } catch (error) {
     console.log(error.message)
     res.status(500).send("Some error occured")
