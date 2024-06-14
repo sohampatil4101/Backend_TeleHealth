@@ -205,6 +205,7 @@ router.post('/bookappoinment', fetchuser, async (req, res) =>{
             problem : req.body.problem,
             meetcode : req.body.meetcode,
             slot: req.body.slot,
+            days: req.body.days,
         })
         
         success = true
