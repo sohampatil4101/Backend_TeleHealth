@@ -46,6 +46,14 @@ const docSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    availibility:{  
+        type: String,
+        required: false
+    },
+    slot:{  
+        type: String,
+        required: false
+    },
     date:{
         type: Date,
         default: Date.now

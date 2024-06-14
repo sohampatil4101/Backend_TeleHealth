@@ -123,7 +123,9 @@ router.post('/login', [
             about : req.body.about,
             fees : req.body.fees,
             govno : req.body.govno,
-            number : req.body.number
+            number : req.body.number,
+            availibility: req.body.availibility,
+            slot: req.body.slot,
         })
         
         success = true
