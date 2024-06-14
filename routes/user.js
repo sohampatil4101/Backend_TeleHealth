@@ -262,6 +262,15 @@ router.post('/fetchspecificdoctors', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+router.post('/fetchspecializationdoctor', fetchuser, async(req, res) =>{
+    try {
+        const notes = await docinfo.findOne({specialization:req.body.specialization}).populate('doctor');
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 // Route to post review
