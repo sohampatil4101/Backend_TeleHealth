@@ -271,6 +271,15 @@ router.post('/fetchspecializationdoctor', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+router.post('/getslotdetail', fetchuser, async(req, res) =>{
+    try {
+        const notes = await appoinment.findOne({doctor:req.body.doctor, days:req.body.days, }).populate('doctor');
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 // Route to post review
