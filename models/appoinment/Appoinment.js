@@ -37,6 +37,12 @@ const AppoinmentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    slot:{
+        type: String,
+        required: false
+    },
+
+
 
 
 

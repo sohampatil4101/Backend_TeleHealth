@@ -203,7 +203,8 @@ router.post('/bookappoinment', fetchuser, async (req, res) =>{
             package : req.body.package,
             duration : req.body.duration,
             problem : req.body.problem,
-            meetcode : req.body.meetcode
+            meetcode : req.body.meetcode,
+            slot: req.body.slot,
         })
         
         success = true
@@ -224,6 +225,16 @@ catch (error) {
 router.get('/fetchallappoinments', fetchuser, async(req, res) =>{
     try {
         const notes = await appoinment.find({user: req.user.id});
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+router.get('/fetchallappoinmentsofdoctor', fetchuser, async(req, res) =>{
+    try {
+        const notes = await appoinment.find({doctor: req.body.id});
         res.json(notes)
     } catch (error) {
     console.log(error.message)

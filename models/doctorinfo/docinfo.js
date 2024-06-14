@@ -55,7 +55,7 @@ const docSchema = new mongoose.Schema({
         required: false
     },
     days:{  
-        type: String,
+        type: [String],
         required: false
     },
     date:{
