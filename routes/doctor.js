@@ -126,6 +126,8 @@ router.post('/login', [
             number : req.body.number,
             availibility: req.body.availibility,
             slot: req.body.slot,
+            days: req.body.days
+
         })
         
         success = true
