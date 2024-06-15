@@ -11,6 +11,7 @@ const {body, validationResult} = require('express-validator')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const appoinment = require('../models/appoinment/Appoinment')
+const remider = require('../models/reminder')
 var CryptoJS = require("crypto-js");
 
 
@@ -464,6 +465,34 @@ router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
 // // Decrypt the text
 // const decryptedText = decryptText(encryptedText, secretKey);
 // console.log("Decrypted Text:", decryptedText);
+
+
+
+
+router.post('/addreminder', fetchuser, async(req, res) =>{
+    try {
+        const user = await remider.create({
+            user: req.user.id,
+            medicine: req.body.medicine,
+            time: req.body.time
+        });        
+        res.json(user)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
+
+
+router.get('/getreminder', fetchuser, async(req, res) =>{
+    try {
+        const notes = await remider.find({user: req.user.id})
+        res.json(notes)
+    } catch (error) {
+    console.log(error.message)
+    res.status(500).send("Some error occured")
+    }
+})
 
 
 module.exports = router
