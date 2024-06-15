@@ -45,6 +45,10 @@ const AppoinmentSchema = new mongoose.Schema({
         type: String,
         required: false
     },
+    confirm:{
+        type: String,
+        default:"pending"
+    },
 
 
 
