@@ -12,7 +12,7 @@ const PermissionSchema = new mongoose.Schema({
     },  
     doctor:{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'doctor',
     },  
     date:{
         type: Date,
