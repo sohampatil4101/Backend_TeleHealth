@@ -158,7 +158,7 @@ router.get('/fetchallappoinments', fetchdoctor, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
-router.get('/acceptreject', fetchdoctor, async(req, res) =>{
+router.post('/acceptreject', fetchdoctor, async(req, res) =>{
     try {
         const notes = await appoinment.findOne({_id: req.body.id});
         notes.confirm = req.body.mssg
