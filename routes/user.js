@@ -30,16 +30,13 @@ const validate = [
 // Encryption function
 function encryptText(text, key) {
     const encJson = CryptoJS.AES.encrypt(JSON.stringify(text), key).toString();
-    const encData = CryptoJS.enc.Base64.stringify(
-      CryptoJS.enc.Utf8.parse(encJson)
-    );
-    return encData;
+    return encJson;
 }
 // Decryption function
 function decryptText(encryptedText, key) {
-    const decData = CryptoJS.enc.Base64.parse(encryptedText).toString(CryptoJS.enc.Utf8);
-    const bytes = CryptoJS.AES.decrypt(decData, key).toString(CryptoJS.enc.Utf8);
-    return JSON.parse(bytes);
+    const bytes = CryptoJS.AES.decrypt(encryptedText, key)
+    const plaintext = bytes.toString(CryptoJS.enc.Utf8)
+    return plaintext
 }
 
 // Route 1 to create user
@@ -216,7 +213,7 @@ router.post('/bookappoinment', fetchuser, async (req, res) =>{
 
 catch (error) {
     console.log(error.message)
-    res.status(500).send("Some error occured")
+    res.status(500).send("Some error occured")  
 }
 
 
@@ -340,6 +337,9 @@ router.post('/postehr', upload.single('ehr'), fetchuser, async (req, res) => {
         
         const decryptedfile = decryptText(encryptedfile, secretKey);
         console.log("Decrypted file name:", decryptedfile);
+        console.log("cvavchgascvjh")
+
+
 
         const user = await ehr.create({
             user: req.user.id,
@@ -392,11 +392,13 @@ router.get('/getehr', fetchuser, async(req, res) =>{
 router.post('/editpermission', fetchuser, async (req, res) => {
     try {
         const secretKey = req.user.id
-        const note = await ehr.findOne({ user: req.user.id, _id: req.body.fileid });
+        const note = await ehr.findOne({ user: req.user.id, _id: req.body.ehr });
+        console.log("greatest", note)
         const newPermission = note.permission === "public" ? "private" : "public";
-        console.log("Soham", note.ehr)
-        const newEhr = note.permission === "public" ? encryptText(note.ehr, secretKey) : decryptText(note.ehr, secretKey);
-
+        const newEhr = note.permission === "public" ? encryptText(note.ehr, secretKey) : decryptText(note.ehr, secretKey).slice(1, -1);
+        console.log("soham is great", decryptText(note.ehr, secretKey).slice(1, -1))
+        console.log("soham is great", decryptText(note.ehr, secretKey).slice(1, -1))
+    
         await ehr.findByIdAndUpdate(note._id, { permission: newPermission, ehr: newEhr });
         const updatedNote = await ehr.findById(note._id);
         res.json(updatedNote);
@@ -443,7 +445,7 @@ router.post('/fetchuserdetails', fetchuser, async(req, res) =>{
 
 router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
     try {
-        const notes = await permission.find({user: req.user.id}).populate('doctor').populate('ehr');
+        const notes = await permission.find({user: req.user.id})
         res.json(notes)
     } catch (error) {
     console.log(error.message)
@@ -465,3 +467,5 @@ router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
 
 
 module.exports = router
+
+
