@@ -163,7 +163,7 @@ router.post('/acceptreject', fetchdoctor, async(req, res) =>{
         const notes = await appoinment.findOne({_id: req.body.id});
         notes.confirm = req.body.mssg
         notes.save()
-        res.json(notes)
+        res.json("success")
     } catch (error) {
     console.log(error.message)
     res.status(500).send("Some error occured")
