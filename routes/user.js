@@ -397,10 +397,11 @@ router.post('/editpermission', fetchuser, async (req, res) => {
         console.log("greatest", note)
         const newPermission = note.permission === "public" ? "private" : "public";
         const newEhr = note.permission === "public" ? encryptText(note.ehr, secretKey) : decryptText(note.ehr, secretKey).slice(1, -1);
-        console.log("soham is great", decryptText(note.ehr, secretKey).slice(1, -1))
-        console.log("soham is great", decryptText(note.ehr, secretKey).slice(1, -1))
+        
     
         await ehr.findByIdAndUpdate(note._id, { permission: newPermission, ehr: newEhr });
+        console.log("siakjnascanksnnas", )
+        let data = await permission.findOneAndDelete({ user: req.user.id, ehr: req.body.ehr });
         const updatedNote = await ehr.findById(note._id);
         res.json(updatedNote);
     } catch (error) {
@@ -453,6 +454,8 @@ router.get('/getpermissioninfo', fetchuser, async(req, res) =>{
     res.status(500).send("Some error occured")
     }
 })
+
+
 
 
 // // Example usage
