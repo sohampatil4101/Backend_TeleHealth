@@ -365,7 +365,7 @@ router.get('/getallmyehr', fetchuser, async (req, res) => {
             _id: note._id,
             title: note.title,
             permission: note.permission,
-            path: decryptText(note.ehr, secretKey),
+            path: note.permission === "public" ? note.ehr:decryptText(note.ehr, secretKey).slice(1,-1),
             date: note.date
         }));
 
